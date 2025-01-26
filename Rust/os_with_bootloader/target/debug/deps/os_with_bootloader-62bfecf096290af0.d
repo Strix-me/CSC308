@@ -1,0 +1,8 @@
+/home/razkimono/CSC308/Rust/os_with_bootloader/target/debug/deps/libos_with_bootloader-62bfecf096290af0.rmeta: src/main.rs
+
+/home/razkimono/CSC308/Rust/os_with_bootloader/target/debug/deps/os_with_bootloader-62bfecf096290af0.d: src/main.rs
+
+src/main.rs:
+
+# env-dep:BIOS_PATH=/home/razkimono/CSC308/Rust/os_with_bootloader/target/debug/build/os_with_bootloader-3811e3fe3a25e2af/out/bios.img
+# env-dep:UEFI_PATH=/home/razkimono/CSC308/Rust/os_with_bootloader/target/debug/build/os_with_bootloader-3811e3fe3a25e2af/out/uefi.img
