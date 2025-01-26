@@ -27,7 +27,7 @@ fn my_entry_point(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
     use core::fmt::Write; // Required for `writeln!`
 
     // Write multiple lines to test scrolling
-    for i in 0..45 {
+    for i in 0..20 {
         writeln!(frame_buffer_writer, "This is line number {}", i).unwrap();
         print!(frame_buffer_writer, "This is printed without a newline {}.\n", i);
 

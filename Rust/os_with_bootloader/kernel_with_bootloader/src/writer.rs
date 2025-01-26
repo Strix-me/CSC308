@@ -26,6 +26,7 @@ pub struct FrameBufferWriter {
     y_pos: usize,
     scroll_offset: usize,
     
+    
 }
 
 impl FrameBufferWriter {
