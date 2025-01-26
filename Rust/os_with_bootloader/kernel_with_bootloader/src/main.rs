@@ -28,8 +28,7 @@ fn my_entry_point(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
 
     // Write multiple lines to test scrolling
     for i in 0..20 {
-        writeln!(frame_buffer_writer, "This is line number {}", i).unwrap();
-        print!(frame_buffer_writer, "This is printed without a newline {}.\n", i);
+        frame_buffer_writer.print("\nHello world \nThis is a test \n\\cOrange Text \\rIndented Text");
 
 }
     

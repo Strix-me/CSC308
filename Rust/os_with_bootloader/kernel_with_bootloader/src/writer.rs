@@ -12,6 +12,10 @@ const LINE_SPACING: usize = 2;
 const LETTER_SPACING: usize = 0;
 const BORDER_PADDING: usize = 1;
 
+// ANSI-like color codes
+const COLOR_ORNG: [u8; 3] = [0, 165, 255]; // RGB for orange
+const COLOR_WHITE: [u8; 3] = [255, 255, 255]; // RGB for white (default color)
+
 fn get_char_raster(c: char) -> RasterizedChar {
     fn get(c: char) -> Option<RasterizedChar> {
         get_raster(c, FONT_WEIGHT, CHAR_RASTER_HEIGHT)
@@ -25,7 +29,7 @@ pub struct FrameBufferWriter {
     x_pos: usize,
     y_pos: usize,
     scroll_offset: usize,
-    
+    current_color: [u8; 3],
     
 }
 
@@ -37,10 +41,32 @@ impl FrameBufferWriter {
             x_pos: 0,
             y_pos: 0,
             scroll_offset: 0,  // New field
+            current_color: COLOR_WHITE,
         };
         logger.clear();
         logger
     }
+
+    pub fn print(&mut self, text: &str) {
+        let mut chars = text.chars().peekable();
+        while let Some(c) = chars.next() {
+            match c {
+                '\\' => {
+                    if let Some(next) = chars.next() {
+                        match next {
+                            'c' => self.current_color = COLOR_ORNG,  // Change to orange
+                            'r' => self.current_color = COLOR_WHITE, // Reset to white
+                            _ => self.write_char(c),                // Unknown sequence
+                        }
+                    }
+                }
+                '\n' => self.newline(),
+                '\t' => self.indent_tab(),
+                _ => self.write_char(c),
+            }
+        }
+    }
+
 
     fn newline(&mut self) {
         self.y_pos += CHAR_RASTER_HEIGHT.val() + LINE_SPACING;
@@ -117,6 +143,12 @@ impl FrameBufferWriter {
             self.redraw();
         }
     }
+
+    fn indent_tab(&mut self) {
+        for _ in 0..4 {
+            self.write_char(' ');
+        }
+    }
     
     fn scroll_down(&mut self) {
         let char_height = CHAR_RASTER_HEIGHT.val() + LINE_SPACING;
@@ -149,16 +181,24 @@ impl FrameBufferWriter {
     }
 
     fn write_pixel(&mut self, x: usize, y: usize, intensity: u8) {
+        if x >= self.width() || y >= self.height() {
+            return;
+        }
         let pixel_offset = y * self.info.stride + x;
-        let color = match self.info.pixel_format {
-            PixelFormat::Rgb => [intensity, intensity, intensity / 2, 0],
-            PixelFormat::Bgr => [intensity / 2, intensity, intensity, 0],
-            PixelFormat::U8 => [if intensity > 200 { 0xf } else { 0 }, 0, 0, 0],
-            other => {
-                self.info.pixel_format = PixelFormat::Rgb;
-                panic!("pixel format {:?} not supported in logger", other);
-            }
-        };
+        let color = [
+            (self.current_color[0] as u16 * intensity as u16 / 255) as u8,
+            (self.current_color[1] as u16 * intensity as u16 / 255) as u8,
+            (self.current_color[2] as u16 * intensity as u16 / 255) as u8,
+        ];
+        // let color = match self.info.pixel_format {
+        //     PixelFormat::Rgb => [intensity, intensity, intensity / 2, 0],
+        //     PixelFormat::Bgr => [intensity / 2, intensity, intensity, 0],
+        //     PixelFormat::U8 => [if intensity > 200 { 0xf } else { 0 }, 0, 0, 0],
+        //     other => {
+        //         self.info.pixel_format = PixelFormat::Rgb;
+        //         panic!("pixel format {:?} not supported in logger", other);
+        //     }
+        // };
         let bytes_per_pixel = self.info.bytes_per_pixel;
         let byte_offset = pixel_offset * bytes_per_pixel;
         self.framebuffer[byte_offset..(byte_offset + bytes_per_pixel)].copy_from_slice(&color[..bytes_per_pixel]);
