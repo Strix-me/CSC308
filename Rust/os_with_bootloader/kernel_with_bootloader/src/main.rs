@@ -19,25 +19,26 @@ pub static BOOTLOADER_CONFIG: bootloader_api::BootloaderConfig = {
 };
 bootloader_api::entry_point!(my_entry_point, config = &BOOTLOADER_CONFIG);
 
-fn my_entry_point(boot_info: &'static mut bootloader_api::BootInfo)->!{
-    // loop{
-    //     hlt();//stop x86_64 from being unnecessarily busy while looping
-    // }
-    // let frame_buffer_info = boot_info.framebuffer.as_mut().unwrap().i nfo();
-    // let buffer = boot_info.framebuffer.as_mut().unwrap(). buffer_mut();
-    let frame_buffer_info = 
-    boot_info.framebuffer.as_mut().unwrap().info();
-    let buffer = boot_info.framebuffer.as_mut().unwrap().buffer_mut(); 
-    let mut frame_buffer_writer =
-    FrameBufferWriter::new(buffer, frame_buffer_info); 
-    use core::fmt::Write;//below requires this
-    writeln!(frame_buffer_writer, "Testing testing {} and {}", 1, 4.0/2.0).unwrap();
+fn my_entry_point(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
+    let frame_buffer_info = boot_info.framebuffer.as_mut().unwrap().info();
+    let buffer = boot_info.framebuffer.as_mut().unwrap().buffer_mut();
+    let mut frame_buffer_writer = FrameBufferWriter::new(buffer, frame_buffer_info);
 
-    loop {
-        hlt(); //stop x86_64 from being unnecessarily busy while looping
+    use core::fmt::Write; // Required for `writeln!`
+
+    // Write multiple lines to test scrolling
+    for i in 0..45 {
+        writeln!(frame_buffer_writer, "This is line number {}", i).unwrap();
+        writeln!(frame_buffer_writer, "This is a very long line that should wrap automatically when it reaches the end of the screen width!").unwrap();
+
     }
-        
+    
+    // Halt the CPU in an infinite loop
+    loop {
+        x86_64::instructions::hlt();
+    }
 }
+
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {

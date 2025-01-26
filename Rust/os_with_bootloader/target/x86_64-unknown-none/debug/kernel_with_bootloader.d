@@ -1,1 +1,1 @@
-/home/razkimono/CSC308/Rust/os_with_bootloader/target/x86_64-unknown-none/debug/kernel_with_bootloader: /home/razkimono/CSC308/Rust/os_with_bootloader/kernel_with_bootloader/src/main.rs
+/home/razkimono/CSC308/Rust/os_with_bootloader/target/x86_64-unknown-none/debug/kernel_with_bootloader: /home/razkimono/CSC308/Rust/os_with_bootloader/kernel_with_bootloader/src/main.rs /home/razkimono/CSC308/Rust/os_with_bootloader/kernel_with_bootloader/src/writer/constants.rs /home/razkimono/CSC308/Rust/os_with_bootloader/kernel_with_bootloader/src/writer.rs

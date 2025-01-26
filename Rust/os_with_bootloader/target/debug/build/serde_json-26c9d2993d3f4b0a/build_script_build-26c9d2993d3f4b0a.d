@@ -1,0 +1,5 @@
+/home/razkimono/CSC308/Rust/os_with_bootloader/target/debug/build/serde_json-26c9d2993d3f4b0a/build_script_build-26c9d2993d3f4b0a: /home/razkimono/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.137/build.rs
+
+/home/razkimono/CSC308/Rust/os_with_bootloader/target/debug/build/serde_json-26c9d2993d3f4b0a/build_script_build-26c9d2993d3f4b0a.d: /home/razkimono/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.137/build.rs
+
+/home/razkimono/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.137/build.rs:
