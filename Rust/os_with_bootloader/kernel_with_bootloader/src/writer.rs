@@ -130,7 +130,7 @@ impl FrameBufferWriter {
         let stride_bytes = self.info.stride * self.info.bytes_per_pixel;
         let start_offset = self.scroll_offset * stride_bytes;
         let visible_height = self.height();
-        let total_height = self.info.height;
+        let _total_height = self.info.height;
     
         if start_offset + (visible_height * stride_bytes) <= self.framebuffer.len() {
             self.framebuffer.copy_within(start_offset..(start_offset + visible_height * stride_bytes), 0);
@@ -176,4 +176,10 @@ impl Write for FrameBufferWriter {
         Ok(())
     }
 }
-
+#[macro_export]
+macro_rules! print { //defines a macro for printing
+    ($writer:expr, $($arg:tt)*) => {{ //captures 1st argumeent as an expression "framebuffer"
+        use core::fmt::Write; //bring write trait into scope essentially for writing
+        let _ = write!($writer, $($arg)*); // write! : formats arg. and writes them to $writer: implements write trait
+}};
+}

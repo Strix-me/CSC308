@@ -29,9 +29,9 @@ fn my_entry_point(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
     // Write multiple lines to test scrolling
     for i in 0..45 {
         writeln!(frame_buffer_writer, "This is line number {}", i).unwrap();
-        writeln!(frame_buffer_writer, "This is a very long line that should wrap automatically when it reaches the end of the screen width!").unwrap();
+        print!(frame_buffer_writer, "This is printed without a newline {}.\n", i);
 
-    }
+}
     
     // Halt the CPU in an infinite loop
     loop {
