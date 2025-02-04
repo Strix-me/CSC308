@@ -9,8 +9,8 @@ use bootloader_api::config::Mapping;
 use x86_64::instructions::hlt;
 
 
-mod interrupts;
-use interrupts::{init_idt, PICS};
+// mod interrupts;
+// use interrupts::{init_idt, PICS};
 
 // Use the entry_point macro to register the entry point function:
 //bootloader_api::entry_point!(kernel_main)
@@ -28,12 +28,12 @@ fn my_entry_point(boot_info: &'static mut bootloader_api::BootInfo) -> ! {
     let buffer = boot_info.framebuffer.as_mut().unwrap().buffer_mut();
     let mut frame_buffer_writer = FrameBufferWriter::new(buffer, frame_buffer_info);
 
-    use core::fmt::Write; // Required for `writeln!`
+    // use core::fmt::Write; // Required for `writeln!`
 
 
-    init_idt();
-    unsafe {PICS.lock().intitialize()};
-    x86_64::instructions::interrupts::enable();
+    // init_idt();
+    // unsafe {PICS.lock().intitialize()};
+    // x86_64::instructions::interrupts::enable();
 
     // Write multiple lines to test scrolling
     for i in 0..20 {
